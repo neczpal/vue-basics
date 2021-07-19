@@ -1,0 +1,58 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <script src="https://unpkg.com/vue@next"></script>
+</head>
+<body>
+<div id="vue-app" style="text-align: center">
+    <p>Ask a yes/no question:</p>
+    <input type="text" v-model="question" style="width:50%">
+    <h1>{{ answer }}</h1>
+    <img v-if="image" :src="image" alt="" style="width:50%">
+</div>
+<script src="https://cdn.jsdelivr.net/npm/axios@0.12.0/dist/axios.min.js"></script>
+<script>
+    const defaultAnswer = 'Please give me a question!'
+    const yesNoApi = 'https://yesno.wtf/api'
+    const VueApp = {
+        data() {
+            return {
+                question: '',
+                answer: defaultAnswer,
+                image: ""
+            }
+        },
+        watch: {
+          question(newValue, oldValue) {
+              if (newValue.indexOf('?') > -1) {
+                  this.fetchAnswer();
+              } else {
+                  this.answer = defaultAnswer;
+                  this.image = "";
+              }
+          }
+        },
+        methods: {
+            fetchAnswer() {
+                this.answer = 'Loading...'
+
+                axios.get(yesNoApi)
+                     .then(response => {
+                         this.image = response.data.image
+                         this.answer = response.data.answer
+                     })
+                    .catch(error => {
+                        this.image = ""
+                        this.answer = "Hard question..."
+                    })
+            }
+        }
+    }
+
+    const app = Vue.createApp(VueApp)
+    const vm = app.mount('#vue-app')
+
+</script>
+</body>
+</html>
