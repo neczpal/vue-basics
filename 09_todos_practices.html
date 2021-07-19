@@ -1,0 +1,60 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <script src="https://unpkg.com/vue@next"></script>
+</head>
+<body>
+<div id="vue-app" style="text-align: center">
+    <div style="display:inline">
+        <input v-model="inputTodo" placeholder="Todo..."/>
+        <input v-model="inputTooltip" placeholder="Tooltip..."/>
+        <button @click="addTodo()">+</button>
+    </div>
+    <h1 v-if="todos.length > 5" style="color:red">Több, mint 5 feladat!</h1>
+    <ol>
+        <todo-item v-for="item in todos" :todo="item" :key="item.id"></todo-item>
+    </ol>
+</div>
+
+<script>
+    const VueApp = {
+        data() {
+            return {
+                todos: [
+                    {id: 0, text: 'Eat', tooltip: 'Enni kéne.'},
+                    {id: 1, text: 'Sleep', tooltip: 'Aludni kéne.'},
+                    {id: 2, text: 'Repeat', tooltip: 'Ismételni kéne.'}
+                ],
+                todoIdCounter: 3,
+                inputTodo: "",
+                inputTooltip: ""
+            }
+        },
+        methods: {
+            addTodo() {
+                this.todos.push({
+                    id: this.todoIdCounter++,
+                    text: this.inputTodo,
+                    tooltip: this.inputTooltip
+                })
+                this.inputTodo = ""
+                this.inputTooltip = ""
+            }
+        }
+    }
+
+    const app = Vue.createApp(VueApp)
+
+    app.component('todo-item', {
+        props: ['todo'],
+        template: `
+          <li :title="todo.tooltip">{{ todo.text }} <strong>({{todo.id}})</strong></li>`
+    })
+
+
+    app.mount('#vue-app')
+
+</script>
+</body>
+</html>
