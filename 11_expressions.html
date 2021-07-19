@@ -1,0 +1,50 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <script src="https://unpkg.com/vue@next"></script>
+</head>
+<body>
+<div id="vue-app">
+    <p>{{ number + 12}}</p>
+    <p>{{ number > 0 ? 'greater' : 'not greater'}}</p>
+    <p>{{ message.split('').reverse().join('') }}</p>
+    <p>
+        {{ (() => {
+            if(number === 0) {
+                return 'equal 0'
+            } else {
+                return 'not 0'
+            }
+            })()
+        }}
+    </p>
+
+    <div :id=`temp-${number}`> </div>
+
+    <div :id="(() => {
+        if(number === 0) {
+            return 'equal-zero'
+        } else {
+            return 'not-zero'
+        }
+    })()">
+    </div>
+
+
+</div>
+
+<script>
+    const VueApp = {
+        data() {
+            return {
+                number: 3,
+                message: 'Hello World!'
+            }
+        }
+    }
+
+    Vue.createApp(VueApp).mount('#vue-app')
+</script>
+</body>
+</html>
