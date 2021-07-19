@@ -1,0 +1,48 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <script src="https://unpkg.com/vue@next"></script>
+</head>
+<body>
+<div id="vue-app">
+    <p> {{ message }} </p>
+    <!-- Shorthand v-on: => @ -->
+    <button @[eventname]="scrabbleMessage">Scrabble Message</button>
+    <button @click="changeEvent">Change input mode</button>
+
+    <!-- Shorthand v-bind: => : -->
+    <p>
+        <a :href="url">Google!</a>
+    </p>
+    <p>
+        <a :[bindkey]="url">Google!</a>
+    </p>
+</div>
+
+<script>
+    const VueApp = {
+        data() {
+            return {
+                message: 'Hello World!',
+                eventname: 'click',
+                url: "http://goo.gl",
+                bindkey: 'href'
+            }
+        },
+        methods: {
+            scrabbleMessage() {
+                this.message = this.message.split('').sort(function () {
+                    return 0.5 - Math.random()
+                }).join('')
+            },
+            changeEvent() {
+                this.eventname = this.eventname === 'click' ? 'mouseover' : 'click'
+            }
+        }
+    }
+
+    Vue.createApp(VueApp).mount('#vue-app')
+</script>
+</body>
+</html>
