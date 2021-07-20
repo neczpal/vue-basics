@@ -1,0 +1,64 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <script src="https://unpkg.com/vue@next"></script>
+    <style>
+        .hovered {
+            background-color: lightblue;
+        }
+        .clicked {
+            background-color: lightcoral;
+        }
+
+        .red {
+            background-color: red;
+        }
+        .blue {
+            background-color: blue;
+        }
+        .red.blue {
+            background-color: purple;
+        }
+    </style>
+</head>
+<body>
+    <div id="vue-app">
+        <div :class="{hovered: isHovered, clicked: isClicked}"
+             @mouseenter="isHovered=true"
+             @mouseleave="isHovered=false"
+             @click="isClicked=!isClicked">
+            <h1>Hover me, or click me</h1>
+        </div>
+
+        <div :class="classObject">
+            <h1>Set my color with checkboxes:</h1>
+            <input type="checkbox" v-model="classObject.blue"><span>Blue</span>
+            <input type="checkbox" v-model="classObject.red"><span>Red</span>
+        </div>
+
+    </div>
+        
+    <script>
+        const VueApp = {
+            data() {
+                return {
+                    isHovered: false,
+                    isClicked: false,
+                    classObject: {
+                        red: false,
+                        blue: false
+                    }
+                }
+            },
+            mounted() {
+                setInterval(() => {
+                    this.counter++
+                }, 1000)
+            }
+        }
+
+        Vue.createApp(VueApp).mount('#vue-app')
+    </script>
+</body>
+</html>

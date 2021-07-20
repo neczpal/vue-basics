@@ -76,3 +76,7 @@
     * [Page](https://neczpal.github.io/vue-basics/18_watchers.html)
     * [Source](https://github.com/neczpal/vue-basics/blob/master/18_watchers.html)
 
+1. Css class bindings
+   * [Page](https://neczpal.github.io/vue-basics/19_css_class.html)
+   * [Source](https://github.com/neczpal/vue-basics/blob/master/19_css_class.html)
+
