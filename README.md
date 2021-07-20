@@ -93,10 +93,14 @@
     * [Source](https://github.com/neczpal/vue-basics/blob/master/22_conditionals.html)
 
 1. Card game
-   * [Page](https://neczpal.github.io/vue-basics/23_card_game.html)
-   * [Source](https://github.com/neczpal/vue-basics/blob/master/23_card_game.html)
+    * [Page](https://neczpal.github.io/vue-basics/23_card_game.html)
+    * [Source](https://github.com/neczpal/vue-basics/blob/master/23_card_game.html)
 
 1. List rendering
-   * [Page](https://neczpal.github.io/vue-basics/24_list_rendering.html)
-   * [Source](https://github.com/neczpal/vue-basics/blob/master/24_list_rendering.html)
-   
+    * [Page](https://neczpal.github.io/vue-basics/24_list_rendering.html)
+    * [Source](https://github.com/neczpal/vue-basics/blob/master/24_list_rendering.html)
+
+1. V-for key usefulness, $emit tries
+    * [Page](https://neczpal.github.io/vue-basics/25_v-for_key.html)
+    * [Source](https://github.com/neczpal/vue-basics/blob/master/25_v-for_key.html)
+ 
