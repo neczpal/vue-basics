@@ -1,0 +1,124 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <script src="https://unpkg.com/vue@next"></script>
+    <style>
+        .done {
+            text-decoration: line-through;
+        }
+        .infected {
+            background-color: lightgreen;
+        }
+    </style>
+</head>
+<body>
+<div id="vue-app">
+    <h3>Todo list:</h3>
+    <todo-item v-for="todo in todos" :key="todo.id"
+               :item="todo"
+               @checked="markDone(todo.id)"
+               @infect="infectNearTodos"
+               :class="{done: todo.done,
+                        infected: todo.infected}"></todo-item>
+
+    <button @click="addRandomTodo">Give me task!</button>
+</div>
+
+<script>
+    let idGen = 0;
+    const VueApp = {
+        data() {
+            return {
+                todos: [
+                    {
+                        id: idGen++,
+                        text: 'Clean kitchen',
+                        done: false,
+                        infected: false,
+                    },
+                    {
+                        id: idGen++,
+                        text: 'Repair bicycle',
+                        done: false,
+                        infected: false,
+                    },
+                    {
+                        id: idGen++,
+                        text: 'Paint walls',
+                        done: false,
+                        infected: false,
+                    },
+                ],
+                todoIdeas: [
+                    'Fight bad',
+                    'Make a fortune',
+                    'Rebuild house',
+                    'Fix roof',
+                    'Clean toilet',
+                    'Fix pipes',
+                    'Get famous',
+                    'Have a concert',
+                    'Learn to fly',
+                    'Destroy all mosquitoes',
+                    'Make a pie',
+                    'Make a cake',
+                    'Cook a soup',
+                    'Conquer a country',
+                    'Call mom'
+                ]
+            }
+        },
+        methods: {
+            addRandomTodo() {
+                this.todos.unshift({id: idGen++, text: this.todoIdeas[Math.floor(Math.random()*this.todoIdeas.length)]})
+            },
+            markDone(id) {
+                var index = this.todos.map(x => {
+                    return x.id;
+                }).indexOf(id);
+
+                this.todos[index].done = !this.todos[index].done;
+            },
+            infectNearTodos(todo) {
+
+                let index = this.todos.indexOf(todo);
+
+                for(let i=Math.max(index-1, 0); i < index+2 && i < this.todos.length; i++) {
+                    this.todos[i].infected = true;
+                    this.todos[i].text = this.todos[i].text.split('').sort(function(){return 0.5-Math.random()}).join('')
+                }
+            }
+        }
+    }
+
+    const app = Vue.createApp(VueApp)
+
+    app.component('todo-item', {
+        props: ['item'],
+        data() {
+            return {
+                isChecked: false
+            }
+        },
+        watch: {
+            isChecked(newV, oldV) {
+                if(newV !== oldV) {
+                    this.$emit('checked')
+                }
+            }
+        },
+        template: `
+          <div>
+          <input type="checkbox" :id="item.id" v-model="isChecked">
+          <label :for="item.id">{{ item.text }}</label>
+          <button v-if="!isChecked" style="background-color: yellow" @click="$emit('infect', item)">☢</button>
+          </div>
+        `
+    })
+
+
+    app.mount('#vue-app')
+</script>
+</body>
+</html>

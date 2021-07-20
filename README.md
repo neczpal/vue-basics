@@ -107,4 +107,8 @@
 1. Events and event modifiers
     * [Page](https://neczpal.github.io/vue-basics/26_events.html)
     * [Source](https://github.com/neczpal/vue-basics/blob/master/26_events.html)
+
+1. Events emit
+    * [Page](https://neczpal.github.io/vue-basics/27_events_emit.html)
+    * [Source](https://github.com/neczpal/vue-basics/blob/master/27_events_emit.html)
  
