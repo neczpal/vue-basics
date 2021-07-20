@@ -1,0 +1,208 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <script src="https://unpkg.com/vue@next"></script>
+    <style>
+
+        .table {
+            display: grid;
+            grid-template-rows: repeat(6, 1fr);
+            grid-template-columns: repeat(5, 1fr);
+            width: 100%;
+            height: 100%;
+        }
+
+        .table > * {
+            text-align: center;
+            background-color: white;
+            border: orangered solid 1px;
+            height: 78px;
+        }
+
+        .draw-here {
+            grid-column: 5;
+            grid-row: 1;
+            font-size: 22px;
+            font-weight: 750;
+            background-color: lightgoldenrodyellow;
+            border: gold solid 2px;
+        }
+
+        .player-ace {
+            border: gold solid 2px;
+            background-color: lightgoldenrodyellow;
+        }
+
+        .row-card {
+            grid-column: 5;
+            background-color: lightcoral;
+        }
+
+        .revealed {
+            background-color: lightgoldenrodyellow;
+            border: gold solid 2px;
+        }
+
+        .play-again {
+            position: fixed;
+            width: 100%;
+            height: 100%;
+            top: 0;
+            left: 0;
+            font-size: 48px;
+        }
+        .play-again > button {
+            width: 100%;
+            height: 100%;
+        }
+
+    </style>
+</head>
+<body>
+<div id="vue-app">
+    <div class="play-again" v-if="gameEnded">
+        <button :style="playAgainStyleObject" @click="resetGame">
+            Play Again
+        </button>
+    </div>
+    <div class="table" v-show="!gameEnded">
+        <div class="player-ace" v-for="(player,index) in players"
+             :style="{gridColumn: `${index+1}`,
+                      gridRow: `${player.position+1}`}">
+            Ace of {{ suits[index] }}
+        </div>
+        <div class="draw-here" @click="drawCard">
+            <div v-if="drawnCards.length === 0">Click here to draw</div>
+            <div v-else>
+                {{ drawnCards[drawnCards.length - 1].name }} of {{ drawnCards[drawnCards.length - 1].suit }}
+            </div>
+        </div>
+        <div class="row-card"
+             v-for="(rowCard, index) in rows"
+             :style="{gridRow: `${index}+2`}"
+             :class="{revealed: index < revealedRow}">
+            <div v-if="index < revealedRow"
+            >
+                {{ rowCard.name }} of {{ rowCard.suit }}
+            </div>
+            <div v-else>
+                Secret Card
+            </div>
+        </div>
+    </div>
+</div>
+
+<script>
+    const VueApp = {
+        data() {
+            return {
+                cards: [],
+                rows: [],
+                players: [],
+                suits: [],
+                drawnCards: [],
+                revealedRow: 0,
+                gameEnded: false,
+                playAgainStyleObject: {
+                    color: 'yellow',
+                    backgroundColor: 'blue'
+                }
+            }
+        },
+        methods: {
+            resetGame() {
+                this.gameEnded = false;
+                this.revealedRow = 0;
+                this.drawnCards = [];
+
+                let names = ['2', '3', '4', '5', '6', '7', '8', '9', '10', 'J', 'Q', 'K'];
+                this.suits = ['Hearts', 'Diamonds', 'Spades', 'Clubs'];
+                this.deck = [];
+
+                for (var s = 0; s < this.suits.length; s++) {
+                    for (var n = 0; n < names.length; n++) {
+                        this.deck.push({name: names[n], suit: this.suits[s]});
+                    }
+                }
+
+                // shuffle the cards
+                for (let i = this.deck.length - 1; i > 0; i--) {
+                    let j = Math.floor(Math.random() * i);
+                    let temp = this.deck[i];
+                    this.deck[i] = this.deck[j];
+                    this.deck[j] = temp;
+                }
+
+                // set the backing cards
+                this.rows = [];
+                for (let i = 0; i < 5; i++) {
+                    this.rows[i] = this.deck.pop();
+                }
+
+                // set starting positions for players
+                this.players = [
+                    {position: 0},
+                    {position: 0},
+                    {position: 0},
+                    {position: 0}];
+
+
+            },
+
+            drawCard() {
+                if(this.gameEnded) {
+                    return;
+                }
+
+                let drawnCard = this.deck.pop();
+
+                this.drawnCards.push(drawnCard);
+
+                //match the suit to index
+                let index = this.suits.indexOf(drawnCard.suit);
+                //move player 1 ahead
+                this.players[index].position++;
+
+                //check row cards
+                let shouldReveal = true;
+                for (let i = 0; i < 4; i++) {
+                    if (this.players[i].position <= this.revealedRow) {
+                        shouldReveal = false;
+                    }
+                }
+                if (shouldReveal) {
+                    //Flip row-card and move back that suit
+                    let index = this.suits.indexOf(this.rows[this.revealedRow].suit);
+                    this.players[index].position--;
+
+                    this.revealedRow++
+                }
+
+                //win condition
+
+                for (let i = 0; i < 4; i++) {
+                    if (this.players[i].position >= 6) {
+                        alert("Player " + this.suits[i] + " hava won!!!");
+                        this.gameEnded = true;
+                        break;
+                    }
+                }
+            }
+        },
+        mounted() {
+            this.resetGame();
+
+            setInterval(() => {
+                this.playAgainStyleObject.color = this.playAgainStyleObject.color === 'blue' ? 'yellow' : 'blue';
+                this.playAgainStyleObject.backgroundColor = this.playAgainStyleObject.backgroundColor === 'blue' ? 'yellow' : 'blue';
+            }, 1500)
+
+        }
+    }
+
+    const app = Vue.createApp(VueApp)
+    app.mount('#vue-app')
+</script>
+</body>
+</html>

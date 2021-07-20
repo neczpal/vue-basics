@@ -91,4 +91,8 @@
 1. Conditionals
     * [Page](https://neczpal.github.io/vue-basics/22_conditionals.html)
     * [Source](https://github.com/neczpal/vue-basics/blob/master/22_conditionals.html)
+
+1. Card game
+   * [Page](https://neczpal.github.io/vue-basics/23_card_game.html)
+   * [Source](https://github.com/neczpal/vue-basics/blob/master/23_card_game.html)
    
