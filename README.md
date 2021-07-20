@@ -111,4 +111,8 @@
 1. Events emit
     * [Page](https://neczpal.github.io/vue-basics/27_events_emit.html)
     * [Source](https://github.com/neczpal/vue-basics/blob/master/27_events_emit.html)
+
+1. Todo list with inline edit
+    * [Page](https://neczpal.github.io/vue-basics/28_todo_practice.html)
+    * [Source](https://github.com/neczpal/vue-basics/blob/master/28_todo_practice.html)
  

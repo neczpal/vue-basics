@@ -1,0 +1,148 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <script src="https://unpkg.com/vue@next"></script>
+
+    <style>
+        .list-item-text {
+            display: inline-block;
+            width: 220px;
+        }
+
+        .done {
+            text-decoration: line-through;
+        }
+    </style>
+</head>
+<body>
+<div id="vue-app">
+    <h3 style="display: inline-block" >Todo list ({{ filteredList.length }})</h3>
+    <button style="display: inline-block; margin-left: 140px" @click="showOrHideDones">{{ filterObj.text }}</button>
+    <ul>
+        <li>
+            <input class="list-item-text" style="margin-left: 18px" type="text" v-model="newTodo">
+            <button @click="addTodo">+</button>
+        </li>
+        <todo-item v-for="todo in filteredList"
+                   :key="todo.id"
+                   :item="todo"
+                   :is-checked="todo.done"
+                   @checked="markDone"
+                   @deleted="remove"
+                   :class="{done: todo.done}">
+        </todo-item>
+    </ul>
+</div>
+
+<script>
+    let idGen = 0;
+    const defaultFilterTextShow = "Show done"
+    const defaultFilterTextHide = "Hide done"
+
+    const VueApp = {
+        data() {
+            return {
+                newTodo: "Get ideas!",
+                filterObj: {
+                    text: defaultFilterTextHide,
+                    state: true
+                },
+                todos: [
+                    {
+                        id: idGen++,
+                        text: 'Clean kitchen',
+                        done: false,
+                    },
+                    {
+                        id: idGen++,
+                        text: 'Repair bicycle',
+                        done: false,
+                    },
+                    {
+                        id: idGen++,
+                        text: 'Paint walls',
+                        done: false,
+                    },
+                ],
+                todoIdeas: [
+                    'Fight bad', 'Make a fortune', 'Rebuild house', 'Fix roof', 'Clean toilet', 'Fix pipes',
+                    'Get famous', 'Have a concert', 'Learn to fly', 'Destroy all mosquitoes', 'Make a pie',
+                    'Make a cake', 'Cook a soup', 'Conquer a country', 'Call mom', 'Make word peace',
+                    'Finish Vue training', 'Learn chinese', 'Build a house', 'Get into space',
+                    'Learn how to sumo', 'Win olympics', 'Learn to play the piano'
+                ]
+            }
+        },
+        computed: {
+            filteredList() {
+                return this.todos.filter(todo => !todo.done || this.filterObj.state);
+            }
+        },
+        methods: {
+            showOrHideDones() {
+                this.filterObj.state = !this.filterObj.state;
+
+                if (this.filterObj.state) {
+                    this.filterObj.text = defaultFilterTextHide;
+                } else {
+                    this.filterObj.text = defaultFilterTextShow;
+                }
+            },
+            addTodo() {
+                this.todos.unshift({
+                    id: idGen++,
+                    text: this.newTodo
+                })
+                this.newTodo = this.todoIdeas[Math.floor(Math.random() * this.todoIdeas.length)];
+            },
+            markDone(todo) {
+                todo.done = !todo.done;
+
+                //If its done we put it on the end of the list
+                if(todo.done) {
+                    let index = this.todos.indexOf(todo);
+
+                    this.todos.splice(index, 1);
+
+                    this.todos.push(todo);
+                }
+
+            },
+            remove(todo) {
+                let index = this.todos.indexOf(todo);
+
+                this.todos.splice(index, 1);
+            },
+        }
+    }
+
+    const app = Vue.createApp(VueApp)
+
+    app.component('todo-item', {
+        props: ['item'],
+        data() {
+            return {
+                isEditing: false
+            }
+        },
+        template: `
+          <li>
+          <input v-if="!isEditing" type="checkbox" style="cursor: pointer" :id="item.id" v-model="item.done"
+                 @click="$emit('checked', item)">
+          <input v-if=isEditing type="text" class="list-item-text" style="margin-left: 18px" v-model="item.text"
+                 @keydown.enter="isEditing=false">
+          <label v-else :for="item.id" class="list-item-text">{{ item.text }}</label>
+          <span v-if="item.done" style="color: red; display: inline-block; cursor: pointer"
+                @click="$emit('deleted', item)">❌</span>
+          <span v-else-if="isEditing" style="display: inline-block; cursor: pointer" @click="isEditing=false">✔</span>
+          <span v-else style="display: inline-block; cursor: pointer" @click="isEditing=true">✎</span>
+          </li>
+        `
+    })
+
+
+    app.mount('#vue-app')
+</script>
+</body>
+</html>
