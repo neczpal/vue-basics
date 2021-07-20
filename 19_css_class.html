@@ -10,7 +10,6 @@
         .clicked {
             background-color: lightcoral;
         }
-
         .red {
             background-color: red;
         }
@@ -19,6 +18,9 @@
         }
         .red.blue {
             background-color: purple;
+        }
+        .static-class {
+            font-size: large;
         }
     </style>
 </head>
@@ -30,13 +32,22 @@
              @click="isClicked=!isClicked">
             <h1>Hover me, or click me</h1>
         </div>
-
         <div :class="classObject">
             <h1>Set my color with checkboxes:</h1>
             <input type="checkbox" v-model="classObject.blue"><span>Blue</span>
             <input type="checkbox" v-model="classObject.red"><span>Red</span>
         </div>
+        <div class='static-class' :class="classObject">
+            <h1>Same with class and :class</h1>
+            <input type="checkbox" v-model="classObject.blue"><span>Blue</span>
+            <input type="checkbox" v-model="classObject.red"><span>Red</span>
+        </div>
 
+        <div :class="[classObject, 'static-class']">
+            <h1>Same with array syntax and static class</h1>
+            <input type="checkbox" v-model="classObject.blue"><span>Blue</span>
+            <input type="checkbox" v-model="classObject.red"><span>Red</span>
+        </div>
     </div>
         
     <script>
@@ -50,11 +61,6 @@
                         blue: false
                     }
                 }
-            },
-            mounted() {
-                setInterval(() => {
-                    this.counter++
-                }, 1000)
             }
         }
 
