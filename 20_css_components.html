@@ -1,0 +1,59 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <script src="https://unpkg.com/vue@next"></script>
+    <style>
+        .c-1 {
+            border-top: blue solid 5px;
+        }
+        .c-2 {
+            border-right: blue solid 5px;
+        }
+        .c-3 {
+            border-bottom: blue solid 5px;
+        }
+        .c-4 {
+            border-left: blue solid 5px;
+        }
+    </style>
+</head>
+<body>
+    <div id="vue-app">
+        <my-component class="c-3 c-4">
+        </my-component>
+        <my-component-2 class="c-2 c-3 c-4">
+        </my-component-2>
+        <my-component-3 class="c-2 c-3 c-4">
+        </my-component-3>
+    </div>
+        
+    <script>
+        const VueApp = {
+            data() {
+                return {
+
+                }
+            }
+        }
+
+        const app = Vue.createApp(VueApp)
+
+        app.component('my-component', {
+            template: `<p class="c-1 c-2">Component 1</p>`
+        })
+
+        app.component('my-component-2', {
+            template: `<p class="c-1">Component 2 - gets no c-2 c-3 c-4 </p>
+                        <span>No root on these 2 element</span>`
+        })
+
+        app.component('my-component-3', {
+            template: `<p class="c-1" :class="$attrs.class">Component 2 - gets with $attrs.class binding </p>
+                        <span>No root on these 2 element</span>`
+        })
+
+        app.mount('#vue-app')
+    </script>
+</body>
+</html>

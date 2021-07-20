@@ -80,3 +80,8 @@
    * [Page](https://neczpal.github.io/vue-basics/19_css_class.html)
    * [Source](https://github.com/neczpal/vue-basics/blob/master/19_css_class.html)
 
+1. Css components
+   * [Page](https://neczpal.github.io/vue-basics/20_css_components.html)
+   * [Source](https://github.com/neczpal/vue-basics/blob/master/20_css_components.html)
+
+
