@@ -1,0 +1,84 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <script src="https://unpkg.com/vue@next"></script>
+    <style>
+        .done {
+            color: lightgray;
+        }
+    </style>
+</head>
+<body>
+<div id="vue-app">
+    <h3>Events and event modifiers</h3>
+    <button style="background-color: red"
+            @click="warning('You fool, now you killed us, you killed us all', $event)">Click me!</button>
+    <br/>
+    <!-- Event modifier -- still click event but added a modifier -->
+    <button style="background-color: red"
+            @click.prevent="alert('You fool, now you killed us, you killed us all')">Click me!</button>
+    <br/>
+    <!-- No Param -->
+    <button style="background-color: red"
+            @click="noparam">Click me!</button>
+</div>
+
+<script>
+    let idGen = 0;
+    const VueApp = {
+        data() {
+            return {
+
+            }
+        },
+        methods: {
+            warning(message, event) {
+                if(event) {
+                    event.preventDefault();
+                }
+                alert(message);
+            },
+            alert(message) {
+                alert(message);
+            },
+            noparam(event) {
+                if(event) {
+                    event.preventDefault();
+                }
+
+                alert("'You fool, now you killed us, you killed us all'")
+            }
+
+        }
+    }
+
+    const app = Vue.createApp(VueApp)
+
+    app.component('todo-item', {
+        props: ['item'],
+        data() {
+            return {
+                isChecked: false
+            }
+        },
+        watch: {
+            isChecked(newV, oldV) {
+                if(newV !== oldV) {
+                    this.$emit('checked')
+                }
+            }
+        },
+        template: `
+          <div>
+          <input type="checkbox" :id="item.id" v-model="isChecked">
+          <label :for="item.id">{{ item.text }}</label>
+          </div>
+        `
+    })
+
+
+    app.mount('#vue-app')
+</script>
+</body>
+</html>

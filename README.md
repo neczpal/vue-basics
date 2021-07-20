@@ -103,4 +103,8 @@
 1. V-for key usefulness, $emit tries
     * [Page](https://neczpal.github.io/vue-basics/25_v-for_key.html)
     * [Source](https://github.com/neczpal/vue-basics/blob/master/25_v-for_key.html)
+
+1. Events and event modifiers
+    * [Page](https://neczpal.github.io/vue-basics/26_events.html)
+    * [Source](https://github.com/neczpal/vue-basics/blob/master/26_events.html)
  
