@@ -95,4 +95,8 @@
 1. Card game
    * [Page](https://neczpal.github.io/vue-basics/23_card_game.html)
    * [Source](https://github.com/neczpal/vue-basics/blob/master/23_card_game.html)
+
+1. List rendering
+   * [Page](https://neczpal.github.io/vue-basics/24_list_rendering.html)
+   * [Source](https://github.com/neczpal/vue-basics/blob/master/24_list_rendering.html)
    

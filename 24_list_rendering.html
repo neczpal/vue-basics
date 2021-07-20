@@ -1,0 +1,59 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <script src="https://unpkg.com/vue@next"></script>
+</head>
+<body>
+    <div id="vue-app">
+
+        <!-- v-for on array -->
+        <h4>Array</h4>
+        <ul>
+            <li v-for="(item, index) in items">({{ index }}) {{ parentMessage }} {{ item.message }}</li>
+        </ul>
+
+        <!-- v-or on object -->
+        <h4>Values</h4>
+        <ul>
+            <li v-for="value in object">{{ value }}</li>
+        </ul>
+        <h4>Keys</h4>
+        <ul>
+            <li v-for="(_, key) in object">{{ key }}</li>
+        </ul>
+        <h4>Keys & Object</h4>
+        <ul>
+            <li v-for="(value, key) in object">{{key}}: {{ value }}</li>
+        </ul>
+
+
+    </div>
+        
+    <script>
+        const VueApp = {
+            data() {
+                return {
+                    parentMessage: 'Message:',
+                    items: [
+                        {
+                            message: 'Something funny'
+                        },
+                        {
+                            message: 'Something serious'
+                        },
+                    ],
+                    object: {
+                        title: 'How to cook a mockingbird',
+                        author: 'Pablo E.R.W. Martin',
+                        published: '2032-02-31',
+                        pageNumbers: '7321'
+                    }
+                }
+            }
+        }
+
+        Vue.createApp(VueApp).mount('#vue-app')
+    </script>
+</body>
+</html>
