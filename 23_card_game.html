@@ -17,7 +17,7 @@
             text-align: center;
             background-color: white;
             border: orangered solid 1px;
-            height: 78px;
+            height: 110px;
         }
 
         .draw-here {
@@ -29,6 +29,13 @@
             border: gold solid 2px;
         }
 
+        .draw-here-text::after {
+            display: block;
+            content: 'Click here to draw!';
+            font-size: 17px;
+            font-weight: normal;
+        }
+
         .player-ace {
             border: gold solid 2px;
             background-color: lightgoldenrodyellow;
@@ -36,6 +43,10 @@
 
         .row-card {
             grid-column: 5;
+            background-color: lightcoral;
+        }
+
+        .secret {
             background-color: lightcoral;
         }
 
@@ -59,23 +70,31 @@
         }
 
         .spades::before {
+            display: block;
             content: '\2660';
             color: black;
+            font-size: 36px;
         }
 
         .hearts::before {
+            display: block;
             content: '\2665';
             color: red;
+            font-size: 36px;
         }
 
         .diamonds::before {
+            display: block;
             content: '\2666';
             color: red;
+            font-size: 36px;
         }
 
         .clubs::before {
+            display: block;
             content: '\2663';
             color: black;
+            font-size: 36px;
         }
 
     </style>
@@ -94,9 +113,11 @@
                       gridRow: `${player.position+1}`}">
             Ace of {{ suits[index] }}
         </div>
-        <div class="draw-here" @click="drawCard">
+        <div class="draw-here" @click="drawCard"
+             :class="{secret: drawnCards.length === 0}">
             <div v-if="drawnCards.length === 0">Click here to draw</div>
             <div v-else
+                 class="draw-here-text"
                  :class="drawnCards[drawnCards.length - 1].suit[0].toLowerCase()+drawnCards[drawnCards.length - 1].suit.substr(1)">
                 {{ drawnCards[drawnCards.length - 1].name }} of {{ drawnCards[drawnCards.length - 1].suit }}
             </div>
@@ -206,7 +227,7 @@
 
                 for (let i = 0; i < 4; i++) {
                     if (this.players[i].position >= 6) {
-                        alert("Player " + this.suits[i] + " hava won!!!");
+                        alert("Player " + this.suits[i] + " have won!!!");
                         this.gameEnded = true;
                         break;
                     }
