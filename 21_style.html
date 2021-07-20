@@ -1,0 +1,35 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <script src="https://unpkg.com/vue@next"></script>
+</head>
+<body>
+    <div id="vue-app">
+        <div :style="{color: red, fontSize: `${fontSize}px` }">
+            Red Text with 30px font size.
+        </div>
+        <div :style="styleObject" >
+            Blue text with 24px font size - styleObject
+        </div>
+    </div>
+        
+    <script>
+        const VueApp = {
+            data() {
+                return {
+                    red: '#FF0000',
+                    fontSize: 30,
+                    styleObject: {
+                        color: 'blue',
+                        fontSize: '24px'
+                    }
+                }
+            }
+        }
+
+        const app = Vue.createApp(VueApp)
+        app.mount('#vue-app')
+    </script>
+</body>
+</html>

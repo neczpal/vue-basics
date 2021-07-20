@@ -84,4 +84,8 @@
    * [Page](https://neczpal.github.io/vue-basics/20_css_components.html)
    * [Source](https://github.com/neczpal/vue-basics/blob/master/20_css_components.html)
 
+1. Style objects
+   * [Page](https://neczpal.github.io/vue-basics/21_style.html)
+   * [Source](https://github.com/neczpal/vue-basics/blob/master/21_style.html)
+
 
