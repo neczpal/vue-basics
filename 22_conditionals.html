@@ -1,0 +1,53 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <script src="https://unpkg.com/vue@next"></script>
+</head>
+<body>
+<div id="vue-app">
+    <div v-for="(item, index) in checkboxes">
+        <input v-if="index === 0 || checkboxes[index-1].active" v-model="checkboxes[index].active" type="checkbox">
+        <span v-if="index === 0 || checkboxes[index-1].active">Check this {{ item.title
+            }}</span>
+    </div>
+    <br/>
+    <input v-model="show" type="checkbox"><span>Show</span>
+    <h3 v-show="show">v-show must go on in display:none!</h3>
+    <h3 v-if="show">v-if gets deleted while false!</h3>
+</div>
+
+<script>
+    const VueApp = {
+        data() {
+            return {
+                checkboxes: [
+                    {title: 'if you think you are smart', active: false},
+                    {title: 'if you happy and you know it', active: false},
+                    {title: 'if you like pancakes', active: false},
+                    {title: 'if you are alive', active: false},
+                    {title: 'if you wanna have fun', active: false},
+                    {title: 'if you think this is boring', active: false},
+                    {title: 'if you wanna just give up', active: false},
+                    {title: 'if you think it will never end', active: false},
+                    {title: 'if you wanna just give up', active: false},
+                    {title: 'if you wanna just give up', active: false},
+                    {title: 'if you wanna just give up', active: false},
+                    {title: 'if you didn\'t get fooled by the repetead text', active: false},
+                    {title: 'if you didn\'t get fooled by the repetead text', active: false},
+                    {title: 'if you didn\'t get fooled by the repetead text', active: false},
+                    {title: 'if you didn\'t get fooled by the repetead text', active: false},
+                    {title: 'if you didn\'t get fooled by the repetead text', active: false},
+                    {title: 'if you are here - Congrats you made it!', active: false},
+                    {title: 'Nothing will happen :/', active: false},
+                ],
+                show: false
+            }
+        }
+    }
+
+    const app = Vue.createApp(VueApp)
+    app.mount('#vue-app')
+</script>
+</body>
+</html>

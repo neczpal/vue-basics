@@ -77,15 +77,18 @@
     * [Source](https://github.com/neczpal/vue-basics/blob/master/18_watchers.html)
 
 1. Css class bindings
-   * [Page](https://neczpal.github.io/vue-basics/19_css_class.html)
-   * [Source](https://github.com/neczpal/vue-basics/blob/master/19_css_class.html)
+    * [Page](https://neczpal.github.io/vue-basics/19_css_class.html)
+    * [Source](https://github.com/neczpal/vue-basics/blob/master/19_css_class.html)
 
 1. Css components
-   * [Page](https://neczpal.github.io/vue-basics/20_css_components.html)
-   * [Source](https://github.com/neczpal/vue-basics/blob/master/20_css_components.html)
+    * [Page](https://neczpal.github.io/vue-basics/20_css_components.html)
+    * [Source](https://github.com/neczpal/vue-basics/blob/master/20_css_components.html)
 
 1. Style objects
-   * [Page](https://neczpal.github.io/vue-basics/21_style.html)
-   * [Source](https://github.com/neczpal/vue-basics/blob/master/21_style.html)
+    * [Page](https://neczpal.github.io/vue-basics/21_style.html)
+    * [Source](https://github.com/neczpal/vue-basics/blob/master/21_style.html)
 
-
+1. Conditionals
+    * [Page](https://neczpal.github.io/vue-basics/22_conditionals.html)
+    * [Source](https://github.com/neczpal/vue-basics/blob/master/22_conditionals.html)
+   
