@@ -123,4 +123,7 @@
 1. Provide, Inject
     * [Page](https://neczpal.github.io/vue-basics/30_provide_inject.html)
     * [Source](https://github.com/neczpal/vue-basics/blob/master/30_provide_inject.html)
- 
+
+1. Dynamic components
+    * [Page](https://neczpal.github.io/vue-basics/31_dynamic_components.html)
+    * [Source](https://github.com/neczpal/vue-basics/blob/master/31_dynamic_components.html)

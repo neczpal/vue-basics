@@ -1,0 +1,155 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <script src="https://unpkg.com/vue@next"></script>
+    <style>
+        .demo {
+            border: 1px solid black;
+            border-radius: 5px;
+            padding: 20px;
+        }
+
+        .demo-tab {
+            border: 1px solid darkslategray;
+            padding: 10px;
+        }
+
+        .tab-btn {
+            padding: 5px;
+            border: 1px solid gray;
+            cursor: pointer;
+            background-color: lightgray;
+        }
+
+        .tab-btn.active {
+            background-color: lightblue;
+        }
+
+        .list-btn {
+            margin-top: 12px;
+            margin-bottom: 12px;
+            cursor: pointer;
+        }
+
+    </style>
+</head>
+<body>
+<div id="vue-app">
+    <div id="dynamic-component-demo" class="demo">
+        <button v-for="tab in tabs"
+                :key="tab"
+                @click="currentTab = tab"
+                :class="['tab-btn', {active: currentTab === tab}]">
+            {{ tab }}
+        </button>
+    </div>
+
+    <keep-alive>
+        <component :is="currentTabComponent" class="demo-tab">
+        </component>
+    </keep-alive>
+</div>
+
+<script>
+    const VueApp = {
+        data() {
+            return {
+                currentTab: 'Home',
+                tabs: ['Home', 'Posts', 'Archive']
+            }
+        },
+        computed: {
+            currentTabComponent() {
+                return `tab-${this.currentTab.toLowerCase()}`
+            }
+        }
+    }
+
+    const app = Vue.createApp(VueApp);
+
+    app.component('tab-home', {
+        template: `
+              <div class="demo-tab">
+              <h1>
+                Welcome Home!
+              </h1>
+              <p>This is your home tab.</p>
+              </div>
+            `
+    });
+
+    app.component('tab-posts', {
+        data() {
+            return {
+                posts: [
+                    {
+                        id: 0,
+                        title: 'Free beer is better than pricier ones study shows',
+                        content: `Lorem ipsum dolor sit amet, consectetur adipiscing elit.
+                                Maecenas quis leo at libero pulvinar porta eleifend eget nunc.
+                                Nulla sed quam id nunc tristique convallis vel eget ligula.
+                                Nulla ut quam ut risus gravida ultricies nec egestas velit.
+                                `
+                    },
+                    {
+                        id: 1,
+                        title: 'Infinite life have been discovered',
+                        content: `
+                            Nunc in diam in augue tempor egestas quis nec lorem.
+                            Suspendisse id magna in lorem viverra elementum.
+
+                            Praesent sed leo eu justo auctor convallis.
+                            Aenean interdum turpis et pharetra commodo.
+                            Donec ac lacus lobortis, aliquet lorem vitae, bibendum est.
+                            Aliquam rutrum velit in tortor iaculis, et luctus nisl finibus.
+                        `
+                    },
+                    {
+                        id: 2,
+                        title: 'British research shows the moon is closer than you think!',
+                        content: `
+                            Vivamus ornare ex non est varius congue.
+                            Mauris et ipsum faucibus, dignissim erat et, tincidunt magna.
+                            Pellentesque imperdiet mi luctus urna imperdiet, eget luctus est tempus.
+                            Aliquam placerat erat eu ornare finibus.
+                            Sed scelerisque justo varius dui auctor, dictum aliquet tortor egestas.
+                        `
+                    },
+                ],
+                selectedPost: null
+            }
+        },
+        template: `
+          <div class="demo-tab">
+          <ul class="list">
+            <li v-for="post in posts" :key="post.id" @click="selectedPost = post" class="list-btn">
+              {{ post.title }}
+            </li>
+          </ul>
+          <div>
+            <div v-if="selectedPost">
+              <h3>{{ selectedPost.title }}</h3>
+              <div v-html="selectedPost.content">
+              </div>
+            </div>
+            <div v-else>
+              Click on the list options
+            </div>
+          </div>
+          </div>
+        `
+    });
+
+    app.component('tab-archive', {
+        template: `
+              <div class="demo-tab">
+                <h4>Archived stuffs</h4>
+              </div>
+            `
+    });
+
+    app.mount('#vue-app');
+</script>
+</body>
+</html>
