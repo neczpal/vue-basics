@@ -117,6 +117,10 @@
     * [Source](https://github.com/neczpal/vue-basics/blob/master/28_todo_practice.html)
 
 1. Slots: default, named, shorthand
-   * [Page](https://neczpal.github.io/vue-basics/29_slots.html)
-   * [Source](https://github.com/neczpal/vue-basics/blob/master/29_slots.html)
+    * [Page](https://neczpal.github.io/vue-basics/29_slots.html)
+    * [Source](https://github.com/neczpal/vue-basics/blob/master/29_slots.html)
+
+1. Provide, Inject
+    * [Page](https://neczpal.github.io/vue-basics/30_provide_inject.html)
+    * [Source](https://github.com/neczpal/vue-basics/blob/master/30_provide_inject.html)
  

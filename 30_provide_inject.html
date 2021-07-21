@@ -1,0 +1,67 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <script src="https://unpkg.com/vue@next"></script>
+    <style>
+    </style>
+</head>
+<body>
+    <div id="vue-app">
+        <shopping-cart-list></shopping-cart-list>
+    </div>
+        
+    <script>
+        const VueApp = {
+            data() {
+                return {
+
+                }
+            },
+        }
+
+        const app = Vue.createApp(VueApp);
+
+        app.component('shopping-cart-list', {
+            data() {
+                return {
+                    cart: ['Milk', 'Bread', 'Apple'],
+                }
+            },
+            provide: {
+                user: 'Beefy Jezos'
+            },
+            template: `
+              <h3>{{ cart.length }}</h3>
+              <ul>
+                <li v-for="item in cart">
+                  <shopping-cart-item :item="item" :user="user"></shopping-cart-item>
+                </li>
+              </ul>
+            `
+        });
+
+        app.component('shopping-cart-item', {
+            props: ['item'],
+            template: `
+              <span>
+                {{item}}
+              </span>
+              <shopping-cart-user :user="user"></shopping-cart-user>
+            `
+        });
+
+        app.component('shopping-cart-user', {
+            inject: ['user'],
+            template: `
+              put in by
+              <strong>
+                {{ user }}
+              </strong>
+            `
+        });
+
+        app.mount('#vue-app');
+    </script>
+</body>
+</html>
