@@ -127,3 +127,7 @@
 1. Dynamic components
     * [Page](https://neczpal.github.io/vue-basics/31_dynamic_components.html)
     * [Source](https://github.com/neczpal/vue-basics/blob/master/31_dynamic_components.html)
+
+1. Todo with view icon and priorities
+   * [Page](https://neczpal.github.io/vue-basics/32_todos_enhanced.html)
+   * [Source](https://github.com/neczpal/vue-basics/blob/master/32_todos_enhanced.html)

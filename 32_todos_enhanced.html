@@ -1,0 +1,346 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <script src="https://unpkg.com/vue@next"></script>
+
+    <style>
+        * {
+            list-style-type: none;
+        }
+
+        .list-item-text {
+            display: inline-block;
+            width: 220px;
+        }
+
+        .crossed {
+            text-decoration: line-through;
+        }
+
+        .done .list-item-text {
+            text-decoration: line-through;
+        }
+
+        .grid {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            grid-template-rows: 1fr;
+
+        }
+
+        .todo-column {
+            grid-column: 1;
+            grid-row: 1;
+        }
+
+        .show-column {
+            grid-column: 2;
+            grid-row: 1;
+            text-align: center;
+            padding: 5px;
+            border: 3px solid slategray;
+            border-radius: 5px;
+        }
+
+        .show-column h1 {
+            font-size: 55px;
+            font-weight: 800;
+            transform: rotate(15deg);
+        }
+
+        .show-column h3 {
+            font-size: 35px;
+            font-weight: 500;
+            transform: rotate(-30deg);
+        }
+
+        .show-column h5 {
+            font-size: 16px;
+            font-weight: 100;
+            transform: rotate(45deg);
+        }
+
+    </style>
+</head>
+<body>
+<div id="vue-app">
+    <div class="grid">
+        <div class="todo-column">
+            <todo-list
+                    @details="showTodo">
+                <template v-slot:icon>
+                    ☀
+                </template>
+            </todo-list>
+        </div>
+        <div class="show-column">
+            <component v-if="currentTodo"
+                       :is="currentTodo.priority === '-' ? 'simple-show' : 'priority-show'"
+                       :todo="currentTodo"></component>
+        </div>
+    </div>
+</div>
+
+<script>
+    let idGen = 0;
+    const defaultFilterTextShow = "Show done"
+    const defaultFilterTextHide = "Hide done"
+
+    const VueApp = {
+        data() {
+            return {
+                currentTodo: null
+            }
+        },
+        methods: {
+            showTodo(todo) {
+                this.currentTodo = todo;
+            }
+        }
+    }
+
+    const app = Vue.createApp(VueApp)
+
+    app.component('simple-show', {
+        props: ['todo'],
+        template: `
+          <div>
+          <p>Simple Show</p>
+          <h2 :class="{crossed: todo.done}">
+            {{ todo.text }}
+          </h2>
+          </div>
+        `
+    });
+
+    app.component('priority-show', {
+        props: ['todo'],
+        template: `
+          <div>
+          <p>Priority Show</p>
+          <h5 v-if="todo.priority === 'low'" :class="{crossed: todo.done}">
+            {{ todo.text }}
+          </h5>
+          <h3 v-else-if="todo.priority === 'med'" :class="{crossed: todo.done}">
+            {{ todo.text }}
+          </h3>
+          <h1 v-else-if="todo.priority === 'high'" :class="{crossed: todo.done}">
+            {{ todo.text }}
+          </h1>
+          </div>
+        `
+    });
+
+    app.component('todo-list', {
+        data() {
+            return {
+                newTodo: "Get ideas!",
+                newTodoPriority: "-",
+                filterObj: {
+                    text: defaultFilterTextHide,
+                    state: true
+                },
+                todos: [
+                    {
+                        id: idGen++,
+                        text: 'Clean kitchen',
+                        done: false,
+                        priority: "high"
+                    },
+                    {
+                        id: idGen++,
+                        text: 'Repair bicycle',
+                        done: false,
+                        priority: "med"
+                    },
+                    {
+                        id: idGen++,
+                        text: 'Paint walls',
+                        done: false,
+                        priority: "-"
+                    },
+                    {
+                        id: idGen++,
+                        text: 'Make pancake',
+                        done: false,
+                        priority: "low"
+                    },
+                ],
+                todoIdeas: [
+                    'Fight bad', 'Make a fortune', 'Rebuild house', 'Fix roof', 'Clean toilet', 'Fix pipes',
+                    'Get famous', 'Have a concert', 'Learn to fly', 'Destroy all mosquitoes', 'Make a pie',
+                    'Make a cake', 'Cook a soup', 'Conquer a country', 'Call mom', 'Make word peace',
+                    'Finish Vue training', 'Learn chinese', 'Build a house', 'Get into space',
+                    'Learn how to sumo', 'Win olympics', 'Learn to play the piano'
+                ]
+            }
+        },
+        computed: {
+            filteredList() {
+                return this.todos.filter(todo => !todo.done || this.filterObj.state);
+            },
+            doneList() {
+                return this.todos.filter(todo => todo.done);
+            },
+            undoneList() {
+                return this.todos.filter(todo => !todo.done);
+            }
+        },
+        emits: ['details'],
+        methods: {
+            showOrHideDones() {
+                this.filterObj.state = !this.filterObj.state;
+
+                if (this.filterObj.state) {
+                    this.filterObj.text = defaultFilterTextHide;
+                } else {
+                    this.filterObj.text = defaultFilterTextShow;
+                }
+            },
+            addTodo() {
+                this.todos.unshift({
+                    id: idGen++,
+                    text: this.newTodo,
+                    priority: this.newTodoPriority
+                })
+                this.newTodo = this.todoIdeas[Math.floor(Math.random() * this.todoIdeas.length)];
+            },
+            markDone(todo) {
+                todo.done = !todo.done;
+
+                // If its done we put it on the end of the list
+                if (todo.done) {
+                    let index = this.todos.indexOf(todo);
+
+                    this.todos.splice(index, 1);
+
+                    this.todos.push(todo);
+                }
+
+            },
+            remove(todo) {
+                let index = this.todos.indexOf(todo);
+
+                this.todos.splice(index, 1);
+            },
+            closeOtherEdits(id) {
+                for (let i = 0; i < this.filteredList.length; i++) {
+                    if (this.todos[i].id !== id) {
+                        this.$refs[`todoRef-${this.todos[i].id}`].stopEditing();
+                    }
+                }
+            },
+            getReferenceName(todo) {
+                return `todoRef-${todo.id}`;
+            },
+            showDetails(todo) {
+                this.$emit('details', todo)
+            }
+        },
+        template: `
+          <h3 style="display: inline-block; margin-right: 6px">Todo list</h3>
+          <h5 style="display: inline-block; margin-right: 6px">All: {{ todos.length }} Done: {{ doneList.length }}
+          Remaining:
+          {{ undoneList.length }}</h5>
+          <button style="display: inline-block;" @click="showOrHideDones">{{ filterObj.text }}</button>
+          <ul>
+          <li>
+            <span><slot name="icon"></slot></span>
+            <input class="list-item-text" style="margin-left: 18px" type="text" v-model="newTodo">
+            <select v-model="newTodoPriority">
+              <option value="-">-</option>
+              <option value="low">Low</option>
+              <option value="med">Med</option>
+              <option value="high">High</option>
+            </select>
+            <button @click="addTodo">+</button>
+          </li>
+          <todo-item v-for="todo in filteredList"
+                     :key="todo.id"
+                     :item="todo"
+                     :is-checked="todo.done"
+                     :ref="getReferenceName(todo)"
+                     @checked="markDone"
+                     @deleted="remove"
+                     @edit-started="closeOtherEdits"
+                     @details="showDetails"
+                     :class="{done: todo.done}">
+            <template #icon>
+              <slot name="icon"></slot>
+            </template>
+          </todo-item>
+          </ul>
+        `
+    });
+
+    app.component('todo-item', {
+        props: ['item'],
+        data() {
+            return {
+                isEditing: false
+            }
+        },
+        computed: {
+            priorityStyle() {
+                if (this.item.priority === 'low') {
+                    return {
+                        color: 'green'
+                    }
+                } else if (this.item.priority === 'med') {
+                    return {
+                        color: 'yellow'
+                    }
+                } else if (this.item.priority === 'high') {
+                    return {
+                        color: 'red'
+                    }
+                } else {
+                    return {
+                        display: 'none'
+                    }
+                }
+            }
+        },
+        methods: {
+            stopEditing() {
+                this.isEditing = false;
+            },
+            startEditing(id) {
+                this.isEditing = true;
+                this.$emit('edit-started', id);
+            }
+        },
+        template: `
+          <li>
+          <span><slot name="icon"></slot></span>
+          <input v-if="!isEditing" type="checkbox" style="cursor: pointer" :id="item.id" v-model="item.done"
+                 @click="$emit('checked', item)">
+          <input v-if="isEditing" type="text" class="list-item-text" style="margin-left: 18px" v-model="item.text"
+                 @keydown.enter="isEditing=false">
+          <label v-else :for="item.id" class="list-item-text">{{ item.text }}</label>
+          <select v-if="isEditing" v-model="item.priority">
+            <option value="-">-</option>
+            <option value="low">Low</option>
+            <option value="med">Med</option>
+            <option value="high">High</option>
+          </select>
+          <span v-else :style="priorityStyle">⬆</span>
+          <span v-if="item.done" style="color: red; display: inline-block; cursor: pointer"
+                @click="$emit('deleted', item)">❌</span>
+          <span v-else-if="isEditing" style="display: inline-block; cursor: pointer" @click="isEditing=false">✔</span>
+          <span v-else style="display: inline-block; cursor: pointer" @click="startEditing(item.id)">✎</span>
+          <span style="display: inline-block; cursor: pointer" @click="$emit('details', item)">🔍</span>
+          </li>
+        `
+    })
+
+    app.mount('#vue-app')
+</script>
+</body>
+</html>
