@@ -1,0 +1,100 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <script src="https://unpkg.com/vue@next"></script>
+    <style>
+        .btn {
+            border-radius: 50px;
+            padding: 25px;
+            background-color: darkred;
+            color: lightgoldenrodyellow;
+            cursor: pointer;
+            transition: 150ms;
+        }
+        .btn:hover {
+            padding: 50px;
+        }
+    </style>
+</head>
+<body>
+    <div id="vue-app">
+        <todo-button-props :item="{text: 'Push props!'}"
+        @click="addProps"></todo-button-props>
+
+        <todo-button-slots
+                @click="addSlots">
+            Push slots
+        </todo-button-slots>
+
+        <base-layout>
+            <!-- # => v-slot: -->
+            <template v-slot:header>
+                <h2>Page Title</h2>
+            </template>
+            <template #default>
+                <p v-for="item in divs">{{item}}</p>
+            </template>
+            <template #footer>
+                <h2>@Abel Neczpal</h2>
+            </template>
+        </base-layout>
+    </div>
+        
+    <script>
+        const VueApp = {
+            data() {
+                return {
+                    divs: []
+                }
+            },
+            methods: {
+                addProps() {
+                    this.divs.push('Go Props! Go');
+                },
+                addSlots() {
+                    this.divs.push('Go Slots! Go');
+                }
+            }
+        }
+
+        const app = Vue.createApp(VueApp);
+
+        app.component('todo-button-props', {
+            props: ['item'],
+            template: `
+              <button class="btn">{{ item.text }}</button>
+            `
+        });
+
+        app.component('todo-button-slots', {
+            props: ['item'],
+            template: `
+              <button class="btn">
+                <slot></slot>
+              </button>
+            `
+        });
+
+        app.component('base-layout', {
+            props: ['item'],
+            template: `
+              <div>
+                <header>
+                  <slot name="header"></slot>
+                </header>
+                <main>
+                  Default slot:
+                  <slot></slot>
+                </main>
+                <footer>
+                  <slot name="footer"></slot>
+                </footer>
+              </div>
+            `
+        });
+
+        app.mount('#vue-app');
+    </script>
+</body>
+</html>
