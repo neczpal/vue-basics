@@ -17,8 +17,9 @@
 </head>
 <body>
 <div id="vue-app">
-    <h3 style="display: inline-block" >Todo list ({{ filteredList.length }})</h3>
-    <button style="display: inline-block; margin-left: 140px" @click="showOrHideDones">{{ filterObj.text }}</button>
+    <h3 style="display: inline-block; margin-right: 6px" >Todo list</h3>
+    <h5 style="display: inline-block; margin-right: 6px">All: {{ todos.length }} Done: {{doneList.length}} Remaining: {{ undoneList.length}}</h5>
+    <button style="display: inline-block;" @click="showOrHideDones">{{ filterObj.text }}</button>
     <ul>
         <li>
             <input class="list-item-text" style="margin-left: 18px" type="text" v-model="newTodo">
@@ -77,6 +78,12 @@
         computed: {
             filteredList() {
                 return this.todos.filter(todo => !todo.done || this.filterObj.state);
+            },
+            doneList() {
+                return this.todos.filter(todo => todo.done);
+            },
+            undoneList() {
+                return this.todos.filter(todo => !todo.done);
             }
         },
         methods: {
